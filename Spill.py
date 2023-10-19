@@ -1,35 +1,39 @@
 import pygame
 import sys
-
-# Initialize Pygame
 pygame.init()
 
-# Display setup
-screen_width = 800
-screen_height = 600
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption("Pygame Template")
+display = pygame.display.set_mode((800, 600))
+clock = pygame.time.Clock()
 
-# Main loop
-running = True
-while running:
+
+class Player:
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+    def main(self, display):
+        pygame.draw.rect(display, (255, 5, 5), (self.x, self.y, self.width, self.height))
+
+
+player = Player(400, 300, 32, 32)
+
+display_scroll = [0, 0]
+
+while True:
+    display.fill((0, 0, 0))
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            sys.exit()
+            pygame.QUIT
+    
+    keys = pygame.key.get_pressed()
 
-    # Update game logic here
-    # ...
+    
 
-    # Clear the screen (optional)
-    screen.fill((0, 0, 0))  # Fill the screen with a black color
+    player.main(display)
 
-    # Draw game elements here
-    # ...
-
-    # Update the display
-    pygame.display.flip()
-
-# Quit Pygame and exit the program
-pygame.quit()
-sys.exit()
+    clock.tick(60)
+    pygame.display.update()
 
