@@ -1,3 +1,4 @@
+
 import pygame
 import sys
 import math
@@ -55,7 +56,4 @@ while True:
 
 
     player.main(display)
-
-    clock.tick(60)
-    pygame.display.update()
 
