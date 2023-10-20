@@ -13,8 +13,22 @@ class Player:
         self.y = y
         self.width = width
         self.height = height
+
     def main(self, display):
         pygame.draw.rect(display, (255, 5, 5), (self.x, self.y, self.width, self.height))
+
+    def move(self, keys):
+        if keys[pygame.K_d]:
+            self.x += 3
+    
+        if keys[pygame.K_a]:
+            self.x -= 3
+
+        if keys[pygame.K_s]:
+            self.y += 3
+
+        if keys[pygame.K_w]:
+            self.y -= 3
 
 
 class PlayerBullet:
@@ -31,14 +45,9 @@ class PlayerBullet:
     def main(self, display):
         self.x -= int(self.x_vel)
         self.y -= int(self.y_vel)
-
         pygame.draw.circle(display, (255, 255, 255), (self.x, self.y), 5)
 
-
 player = Player(400, 300, 32, 32)
-
-display_scroll = [0, 0]
-
 player_bullets = []
 
 while True:
@@ -46,6 +55,8 @@ while True:
 
 
     mouse_x, mouse_y = pygame.mouse.get_pos()
+    keys = pygame.key.get_pressed()
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -57,24 +68,10 @@ while True:
                 player_bullets.append(PlayerBullet(player.x, player.y, mouse_x, mouse_y))
 
 
-    pygame.draw.rect(display, (255, 0, 0), (100-display_scroll[0], 100-display_scroll[1], 16, 16) )
-    
-    keys = pygame.key.get_pressed()
-
-    if keys[pygame.K_d]:
-        display_scroll[0] -= 5
-    
-    if keys[pygame.K_a]:
-        display_scroll[0] += 5
-
-    if keys[pygame.K_s]:
-        display_scroll[1] -= 5
-
-    if keys[pygame.K_w]:
-        display_scroll[1] += 5
-
-
+    player.move(keys)
     player.main(display)
+
+
 
     for bullet in player_bullets:
         bullet.main(display)
