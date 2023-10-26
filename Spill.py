@@ -11,7 +11,7 @@ SCREEN_WIDTH = 1440
 SCREEN_HEIGHT = 900
 PLAYER_SPEED = 3
 BULLET_SPEED = 10
-PLAYER_COLOR = (255, 5, 5)
+PLAYER_COLOR = (5, 255, 5)
 PLAYER2_COLOR = (5, 5, 255)
 BULLET_COLOR = (255, 255, 255)
 pygame.mouse.set_visible(False)
@@ -110,6 +110,9 @@ def main():
 
     last_shot_time = 0
 
+    initial_player1_x, initial_player1_y = 400, 300
+    initial_player2_x, initial_player2_y = 400, 330
+
     # Lager mainloopen som lager skjermen
     while True:
         display.fill((0, 0, 0))
@@ -129,6 +132,28 @@ def main():
             player_bullets.append(PlayerBullet(player.x, player.y, mouse_x, mouse_y))
             last_shot_time = current_time
             player_bullets.append(PlayerBullet(player2.x, player2.y, mouse_x, mouse_y))
+
+
+        # Calculate the distance between the players
+        dx = player2.x - player.x
+        dy = player2.y - player.y
+        distance = math.sqrt(dx * dx + dy * dy)
+
+        # Define a maximum distance threshold
+        max_distance = 100
+        rope_strength = 2
+        # If the distance exceeds the threshold, move players closer together
+        if distance > max_distance:
+            rope_strength = distance * 2
+            ratio = max_distance / distance
+            player2.x -= (dx * ratio)*(rope_strength / max_distance)/50
+            player2.y -= (dy * ratio)*(rope_strength / max_distance)/50
+
+        # Ensure that players stay within the screen boundaries
+        player.x = max(0, min(player.x, SCREEN_WIDTH - player.width))
+        player.y = max(0, min(player.y, SCREEN_HEIGHT - player.height))
+        player2.x = max(0, min(player2.x, SCREEN_WIDTH - player2.width))
+        player2.y = max(0, min(player2.y, SCREEN_HEIGHT - player2.height))
 
         # Oppdaterer posisjonen ettersom hvilke knapper er blitt trykket på
         player.move(keys)
