@@ -1,15 +1,19 @@
 import pygame
 import sys
 import math
+import subprocess
+import random
+import time
 pygame.init()
 
 # Konstante verdier
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 1440
+SCREEN_HEIGHT = 900
 PLAYER_SPEED = 3
 BULLET_SPEED = 10
 PLAYER_COLOR = (255, 5, 5)
 BULLET_COLOR = (255, 255, 255)
+pygame.mouse.set_visible(False)
 
 # Klokke
 display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -50,14 +54,12 @@ class PlayerBullet:
         self.x = x
         self.y = y
 
-        # Bestemmer muse posisjonen
-        self.mouse_x = mouse_x
-        self.mouse_y = mouse_y
+        self.angle = random.uniform(0, 2 * math.pi)
 
-        # Regner ut vinkelen mellom Player og musen
-        self.angle = math.atan2(y - mouse_y, x - mouse_x)
-        self.x_vel = math.cos(self.angle) * BULLET_SPEED
-        self.y_vel = math.sin(self.angle) * BULLET_SPEED
+        # Calculate velocity based on the random angle
+        self.speed = BULLET_SPEED
+        self.x_vel = math.cos(self.angle) * self.speed
+        self.y_vel = math.sin(self.angle) * self.speed
 
     def move(self):
         self.x -= int(self.x_vel)
@@ -75,6 +77,8 @@ def main():
     # Lager en liste som bullets posisjonene og annen info blir lagret
     player_bullets = []
 
+    last_shot_time = 0
+
     # Lager mainloopen som lager skjermen
     while True:
         display.fill((0, 0, 0))
@@ -87,11 +91,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            
-            # Sjekker om du trykker ned venstre klikk og så appender enn bullet i listen
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    player_bullets.append(PlayerBullet(player.x, player.y, mouse_x, mouse_y))
+
+        # Sjekker tiden, om det har gått ett sekund skyter den
+        current_time = pygame.time.get_ticks()
+        if current_time - last_shot_time >= 1000:  # 1000 milliseconds = 1 second
+            player_bullets.append(PlayerBullet(player.x, player.y, mouse_x, mouse_y))
+            last_shot_time = current_time
 
         # Oppdaterer posisjonen ettersom hvilke knapper er blitt trykket på
         player.move(keys)
@@ -111,3 +116,5 @@ def main():
 # Starter programmet ved å sjekke om dette programmet er hoved programmet og starter opp main funksjonen
 if __name__ == "__main__":
     main()
+
+
