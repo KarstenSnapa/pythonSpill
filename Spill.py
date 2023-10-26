@@ -140,14 +140,14 @@ def main():
         distance = math.sqrt(dx * dx + dy * dy)
 
         # Define a maximum distance threshold
-        max_distance = 100
+        max_distance = 120
         rope_strength = 2
         # If the distance exceeds the threshold, move players closer together
         if distance > max_distance:
             rope_strength = distance * 2
             ratio = max_distance / distance
-            player2.x -= (dx * ratio)*(rope_strength / max_distance)/50
-            player2.y -= (dy * ratio)*(rope_strength / max_distance)/50
+            player2.x -= (dx * ratio)*(rope_strength / max_distance)/55
+            player2.y -= (dy * ratio)*(rope_strength / max_distance)/55
 
         # Ensure that players stay within the screen boundaries
         player.x = max(0, min(player.x, SCREEN_WIDTH - player.width))
