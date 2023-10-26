@@ -12,6 +12,7 @@ SCREEN_HEIGHT = 900
 PLAYER_SPEED = 3
 BULLET_SPEED = 10
 PLAYER_COLOR = (255, 5, 5)
+PLAYER2_COLOR = (5, 5, 255)
 BULLET_COLOR = (255, 255, 255)
 pygame.mouse.set_visible(False)
 
@@ -44,6 +45,32 @@ class Player:
     def draw(self, display):
         pygame.draw.rect(display, PLAYER_COLOR, (self.x, self.y, self.width, self.height))
 
+#  Spiller 2
+class Player2:
+
+    # Definerer Player posisjon og størrelse
+    def __init__(self, x, y, width, height):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+
+    # Lager bevegelse
+    def move(self, keys):
+        if keys[pygame.K_RIGHT]:
+            self.x += PLAYER_SPEED
+        if keys[pygame.K_LEFT]:
+            self.x -= PLAYER_SPEED
+        if keys[pygame.K_DOWN]:
+            self.y += PLAYER_SPEED
+        if keys[pygame.K_UP]:
+            self.y -= PLAYER_SPEED
+
+    # Tegner en firkant som er lik player med størrelse og posisjon
+    def draw(self, display):
+        pygame.draw.rect(display, PLAYER2_COLOR, (self.x, self.y, self.width, self.height))
+
+
 # Lager en PlayerBullet class
 class PlayerBullet:
 
@@ -68,11 +95,15 @@ class PlayerBullet:
     def draw(self, display):
         pygame.draw.circle(display, BULLET_COLOR, (self.x, self.y), 5)
 
+
+
+
 # Lager mainloopen i gamet som alltid er aktiv
 def main():
 
     # Gjør Player class til player i main loopen så du kan kalle på den her
     player = Player(400, 300, 32, 32)
+    player2 = Player2(400, 330, 32, 32)
 
     # Lager en liste som bullets posisjonene og annen info blir lagret
     player_bullets = []
@@ -97,12 +128,14 @@ def main():
         if current_time - last_shot_time >= 1000:  # 1000 milliseconds = 1 second
             player_bullets.append(PlayerBullet(player.x, player.y, mouse_x, mouse_y))
             last_shot_time = current_time
+            player_bullets.append(PlayerBullet(player2.x, player2.y, mouse_x, mouse_y))
 
         # Oppdaterer posisjonen ettersom hvilke knapper er blitt trykket på
         player.move(keys)
-
-        # Oppdaterer spriten etter posisjonen
         player.draw(display)
+
+        player2.move(keys)
+        player2.draw(display)
 
         # Tegner bullets på skjermen
         for bullet in player_bullets:
