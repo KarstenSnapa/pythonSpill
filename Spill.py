@@ -14,7 +14,7 @@ BULLET_SPEED = 10
 PLAYER_COLOR = (5, 255, 5)
 PLAYER2_COLOR = (5, 5, 255)
 BULLET_COLOR = (255, 255, 255)
-pygame.mouse.set_visible(False)
+pygame.mouse.set_visible(True)
 
 # Klokke
 display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -70,7 +70,6 @@ class Player2:
     def draw(self, display):
         pygame.draw.rect(display, PLAYER2_COLOR, (self.x, self.y, self.width, self.height))
 
-
 # Lager en PlayerBullet class
 class PlayerBullet:
 
@@ -96,6 +95,22 @@ class PlayerBullet:
         pygame.draw.circle(display, BULLET_COLOR, (self.x, self.y), 5)
 
 
+class SettingsButton:
+
+    def __init__(self, x, y, width, height, action):
+        
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.image = pygame.image.load("Sprites/Settings_button3.jpg")
+        self.image = pygame.transform.scale(self.image, (width, height))
+        self.action = action
+
+
+    def draw(self, display):
+        display.blit(self.image, (self.x, self.y, self.width, self.height))
+
 
 
 # Lager mainloopen i gamet som alltid er aktiv
@@ -111,7 +126,9 @@ def main():
     last_shot_time = 0
 
     initial_player1_x, initial_player1_y = 400, 300
-    initial_player2_x, initial_player2_y = 400, 330
+    initial_player2_x, initial_player2_y = 430, 330
+
+    settings_button = SettingsButton(1400, 0, 32, 32, "Meny.py") 
 
     # Lager mainloopen som lager skjermen
     while True:
@@ -161,6 +178,8 @@ def main():
 
         player2.move(keys)
         player2.draw(display)
+
+        settings_button.draw(display)
 
         # Tegner bullets på skjermen
         for bullet in player_bullets:
