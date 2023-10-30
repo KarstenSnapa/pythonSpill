@@ -16,7 +16,10 @@ Player:
 Brukertesting:
 
 Oppgaver til brukeren:
--Hvordan tror du du kan få blå og grønn til å bevege seg?
+-Hvordan tror du du kan få blå og grønn til å bevege seg
+-Hvor er innstillinger knappen?
+-Prøv å beveg deg rundt, hva skjer?
+-Kan du spille og forklare hva som skjer?
 
 Spørsmål:
 -Hva synes du om Fargene på firkantene?
